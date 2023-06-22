@@ -11,14 +11,15 @@ datasource db {
 }
 
 model Organizacao {
-  id       String @id @default(uuid())
-  nome     String
-  email    String @unique
-  cep      String
-  endereco String
-  whatsapp String
-  password String
-  pets     Pets[]
+  id          String @id @default(uuid())
+  nome        String
+  ornanizacao String @unique
+  email       String @unique
+  cep         String
+  endereco    String
+  whatsapp    String
+  password    String
+  pets        Pets[]
 
   @@map("organizacao")
 }

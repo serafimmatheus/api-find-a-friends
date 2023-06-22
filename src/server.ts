@@ -7,4 +7,5 @@ app
   })
   .then(() => {
     console.log("🚀 Server ready at http://localhost:5555");
-  });
+  })
+  .catch((error) => console.error(error));

@@ -1,9 +1,40 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { prisma } from "../database";
-import { hash } from "bcryptjs";
+import { compare, hash } from "bcryptjs";
 
 class OrganizacaoController {
+  async login(req: FastifyRequest, res: FastifyReply) {
+    const schemaBody = z.object({
+      email: z.string().email(),
+      password: z.string(),
+    });
+
+    const { email, password } = schemaBody.parse(req.body);
+
+    try {
+      const organizacao = await prisma.organizacao.findFirst({
+        where: {
+          email: email,
+        },
+      });
+
+      if (!organizacao) {
+        return res.status(401).send({ message: "Usuário inválidos" });
+      }
+
+      const isPasswordTrue = await compare(password, organizacao.password);
+
+      if (!isPasswordTrue) {
+        return res.status(401).send({ message: "Senha inválidos" });
+      }
+
+      const token = await res.jwtSign({}, { sign: { sub: organizacao.id } });
+
+      return res.status(201).send({ token, user: organizacao });
+    } catch (error) {}
+  }
+
   async all(req: FastifyRequest, res: FastifyReply) {
     try {
       const organizacao = await prisma.organizacao.findMany({
