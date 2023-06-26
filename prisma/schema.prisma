@@ -13,9 +13,11 @@ datasource db {
 model Organizacao {
   id          String @id @default(uuid())
   nome        String
-  ornanizacao String @unique
+  organizacao String @unique
   email       String @unique
   cep         String
+  estado      String @default("undefined")
+  cidade      String @default("undefined")
   endereco    String
   whatsapp    String
   password    String
@@ -25,13 +27,15 @@ model Organizacao {
 }
 
 model Pets {
-  id           String @id @default(uuid())
-  nome         String
-  sobre        String
-  idade        String
-  porte        String
-  nivelEnergia String
-  ambiente     String
+  id                 String @id @default(uuid())
+  nome               String
+  sobre              String
+  idade              String
+  porte              String
+  nivelEnergia       String
+  nivelIndependencia String
+  ambiente           String
+  gatoOuCachorro     String
 
   petId         Organizacao @relation(fields: [organizacaoId], references: [id])
   organizacaoId String
