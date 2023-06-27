@@ -2,7 +2,6 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { prisma } from "../database";
 import { compare, hash } from "bcryptjs";
-import { randomUUID } from "crypto";
 
 class OrganizacaoController {
   async login(req: FastifyRequest, res: FastifyReply) {
@@ -35,7 +34,9 @@ class OrganizacaoController {
         { sign: { sub: organizacao.id, expiresIn: "1d" } }
       );
 
-      return res.status(201).send({ token, user: organizacao });
+      return res
+        .status(201)
+        .send({ token, user: { ...organizacao, password: undefined } });
     } catch (error) {}
   }
 

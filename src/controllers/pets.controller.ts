@@ -20,6 +20,52 @@ class PetsController {
     }
   }
 
+  async findById(req: FastifyRequest, res: FastifyReply) {
+    const schemaParams = z.object({
+      id: z.string(),
+    });
+
+    const { id } = schemaParams.parse(req.params);
+    try {
+      const findPetByIdExists = await prisma.pets.findFirst({
+        where: {
+          id,
+        },
+        select: {
+          id: true,
+          ambiente: true,
+          gatoOuCachorro: true,
+          idade: true,
+          nivelEnergia: true,
+          nivelIndependencia: true,
+          nome: true,
+          porte: true,
+          sobre: true,
+          petId: {
+            select: {
+              nome: true,
+              organizacao: true,
+              email: true,
+              cep: true,
+              estado: true,
+              cidade: true,
+              endereco: true,
+              whatsapp: true,
+            },
+          },
+        },
+      });
+
+      if (!findPetByIdExists) {
+        return res.status(404).send({ message: "Pet não encontrado" });
+      }
+
+      return res.status(200).send(findPetByIdExists);
+    } catch (error) {
+      return res.status(500).send({ message: error });
+    }
+  }
+
   async findByEstadoAndCidade(req: FastifyRequest, res: FastifyReply) {
     const schemaParams = z.object({
       cidade: z.string(),

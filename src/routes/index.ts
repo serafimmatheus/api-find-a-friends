@@ -39,6 +39,8 @@ export function initRoutes(app: FastifyInstance) {
 
   app.get("/api/v1/pets/:estado/:cidade", petsController.findByEstadoAndCidade);
 
+  app.get("/api/v1/pets/:id", petsController.findById);
+
   app.post(
     "/api/v1/pets",
     { onRequest: [authMiddleware] },

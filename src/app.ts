@@ -9,7 +9,7 @@ export const app = fastify();
 app.register(fastifyCors, {
   origin: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-  allowedHeaders: ["Content-Type"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 });
 
 app.register(fastifyJwt, {
