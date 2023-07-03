@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.2.16",
     "@types/bcryptjs": "^2.4.2",
     "@types/node": "^20.3.1",
     "prisma": "^4.16.0",
