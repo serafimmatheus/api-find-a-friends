@@ -27,8 +27,11 @@ model Organizacao {
 }
 
 model Pets {
-  id                 String @id @default(uuid())
+  id                 String   @id @default(uuid())
   nome               String
+  coverImage         String
+  imagesUrl          String[]
+  requisitosDoacao   String[]
   sobre              String
   idade              String
   porte              String

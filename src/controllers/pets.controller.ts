@@ -125,7 +125,10 @@ class PetsController {
   async create(req: FastifyRequest, res: FastifyReply) {
     const schemaBody = z.object({
       nome: z.string(),
+      coverImage: z.string(),
+      imagesUrl: z.array(z.string()),
       sobre: z.string(),
+      requisitosDoacao: z.array(z.string()),
       idade: z
         .string()
         .refine((value) => value === "filhote" || value === "adulto", {
@@ -185,6 +188,9 @@ class PetsController {
       sobre,
       nivelIndependencia,
       gatoOuCachorro,
+      coverImage,
+      imagesUrl,
+      requisitosDoacao,
     } = schemaBody.parse(req.body);
 
     const sub: IPropsSub = await req.jwtVerify();
@@ -205,6 +211,9 @@ class PetsController {
           ambiente,
           organizacaoId,
           gatoOuCachorro,
+          coverImage,
+          imagesUrl,
+          requisitosDoacao,
         },
       });
 
