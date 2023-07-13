@@ -33,6 +33,9 @@ class PetsController {
         },
         select: {
           id: true,
+          coverImage: true,
+          imagesUrl: true,
+          requisitosDoacao: true,
           ambiente: true,
           gatoOuCachorro: true,
           idade: true,
