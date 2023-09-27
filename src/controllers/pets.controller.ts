@@ -69,6 +69,29 @@ class PetsController {
     }
   }
 
+  async fiinByNameOneUser(req: FastifyRequest, res: FastifyReply) {
+    const schemaParams = z.object({
+      id: z.string(),
+    });
+
+    const { id } = schemaParams.parse(req.params);
+
+    try {
+      const myPets = await prisma.organizacao.findMany({
+        include: {
+          pets: true,
+        },
+
+        where: {
+          id,
+        },
+      });
+      return res.status(200).send(myPets);
+    } catch (error) {
+      return res.status(401).send({ message: "Algo deu errado!" });
+    }
+  }
+
   async findByEstadoAndCidade(req: FastifyRequest, res: FastifyReply) {
     const schemaParams = z.object({
       cidade: z.string(),

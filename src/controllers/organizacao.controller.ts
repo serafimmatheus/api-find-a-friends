@@ -162,7 +162,6 @@ class OrganizacaoController {
       cidade: z.string().optional(),
       endereco: z.string().optional(),
       whatsapp: z.string().max(18).optional(),
-      password: z.string().optional(),
     });
 
     const schemaParams = z.object({
@@ -176,7 +175,6 @@ class OrganizacaoController {
       cep,
       email,
       endereco,
-      password,
       whatsapp,
       organizacao,
       cidade,
@@ -200,7 +198,6 @@ class OrganizacaoController {
           cep,
           email,
           endereco,
-          password,
           whatsapp,
           organizacao,
           cidade,

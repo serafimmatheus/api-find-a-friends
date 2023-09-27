@@ -41,6 +41,12 @@ export function initRoutes(app: FastifyInstance) {
 
   app.get("/api/v1/pets/:id", petsController.findById);
 
+  app.get(
+    "/api/v1/me/:id/pets",
+    { onRequest: [authMiddleware] },
+    petsController.fiinByNameOneUser
+  );
+
   app.post(
     "/api/v1/pets",
     { onRequest: [authMiddleware] },
