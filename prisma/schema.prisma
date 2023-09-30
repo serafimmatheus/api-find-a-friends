@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,37 +9,37 @@ datasource db {
 }
 
 model Organizacao {
-  id          String @id @default(uuid())
-  nome        String
-  organizacao String @unique
-  email       String @unique
+  id          String  @id @default(uuid())
+  email       String  @unique
   cep         String
-  estado      String @default("undefined")
-  cidade      String @default("undefined")
   endereco    String
   whatsapp    String
   password    String
+  nome        String
+  organizacao String  @unique
+  cidade      String  @default("undefined")
+  estado      String  @default("undefined")
+  isActive    Boolean @default(false)
   pets        Pets[]
 
   @@map("organizacao")
 }
 
 model Pets {
-  id                 String   @id @default(uuid())
+  id                 String      @id @default(uuid())
   nome               String
-  coverImage         String
-  imagesUrl          String[]
-  requisitosDoacao   String[]
   sobre              String
   idade              String
   porte              String
   nivelEnergia       String
-  nivelIndependencia String
   ambiente           String
+  organizacaoId      String
+  nivelIndependencia String
   gatoOuCachorro     String
-
-  petId         Organizacao @relation(fields: [organizacaoId], references: [id])
-  organizacaoId String
+  coverImage         String
+  imagesUrl          String[]
+  requisitosDoacao   String[]
+  petId              Organizacao @relation(fields: [organizacaoId], references: [id])
 
   @@map("pets")
 }

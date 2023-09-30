@@ -2,6 +2,8 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { prisma } from "../database";
 import { compare, hash } from "bcryptjs";
+import nodemailer from "nodemailer";
+import { env } from "../env";
 
 class OrganizacaoController {
   async login(req: FastifyRequest, res: FastifyReply) {
@@ -144,6 +146,23 @@ class OrganizacaoController {
           cidade,
           estado,
         },
+      });
+
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: true,
+        auth: {
+          user: env.USER_EMAIL,
+          pass: env.USER_PASSWORD_EMAIL,
+        },
+      });
+
+      await transporter.sendMail({
+        from: "Find A Friend",
+        to: email,
+        subject: "Bem vindo ao Find A Friend",
+        text: "Seja bem vindo ao Find A Friend",
       });
 
       return res.status(201).send(data);

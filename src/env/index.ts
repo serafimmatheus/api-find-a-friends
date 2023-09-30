@@ -6,6 +6,8 @@ const envSchema = z.object({
   NODE_ENV: z.enum(["dev", "test", "production"]).default("dev"),
   PORT: z.coerce.number().default(5555),
   SECURITY_TOKEN: z.string(),
+  USER_EMAIL: z.string(),
+  USER_PASSWORD_EMAIL: z.string(),
 });
 
 const _env = envSchema.safeParse(process.env);
