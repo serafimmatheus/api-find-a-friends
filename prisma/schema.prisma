@@ -19,7 +19,7 @@ model Organizacao {
   organizacao String  @unique
   cidade      String  @default("undefined")
   estado      String  @default("undefined")
-  isActive    Boolean @default(false)
+  isActivated Boolean @default(false)
   pets        Pets[]
 
   @@map("organizacao")

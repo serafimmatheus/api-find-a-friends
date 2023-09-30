@@ -22,10 +22,14 @@ export function initRoutes(app: FastifyInstance) {
 
   app.post("/api/v1/organizacoes", organizacaoController.create);
 
-  app.put(
+  app.patch(
     "/api/v1/organizacoes/:id",
-    { onRequest: [authMiddleware, authAdmMiddleware] },
-    organizacaoController.updated
+    organizacaoController.updatedIsActiveAccount
+  );
+
+  app.get(
+    "/api/v1/ativar-conta/:id",
+    organizacaoController.updatedIsActiveAccount
   );
 
   app.delete(

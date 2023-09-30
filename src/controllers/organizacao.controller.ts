@@ -21,6 +21,12 @@ class OrganizacaoController {
         },
       });
 
+      if (!organizacao?.isActivated) {
+        return res
+          .status(401)
+          .send({ message: "Usuário ainda não ativou sua conta." });
+      }
+
       if (!organizacao) {
         return res.status(401).send({ message: "Usuário inválidos" });
       }
@@ -145,29 +151,34 @@ class OrganizacaoController {
           organizacao,
           cidade,
           estado,
+          isActivated: false,
         },
       });
 
       const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: true,
+        service: "gmail",
         auth: {
           user: env.USER_EMAIL,
           pass: env.USER_PASSWORD_EMAIL,
         },
+        secure: true, // Use SSL/TLS
+        tls: {
+          rejectUnauthorized: false, // Permita conexões não autorizadas (usado para testes)
+        },
       });
 
       await transporter.sendMail({
-        from: "Find A Friend",
+        from: env.USER_EMAIL,
         to: email,
         subject: "Bem vindo ao Find A Friend",
         text: "Seja bem vindo ao Find A Friend",
+        html: `<h1>Ative sua conta:</h1>
+        <a href="https://api-find-a-friends.vercel.app/api/v1/ativar-conta/${data.id}">Ativar conta</a>`,
       });
 
       return res.status(201).send(data);
     } catch (error) {
-      return res.status(400).send({ message: "Error" });
+      return res.status(400).send({ message: error });
     }
   }
 
@@ -221,6 +232,34 @@ class OrganizacaoController {
           organizacao,
           cidade,
           estado,
+        },
+      });
+
+      return res.status(204).send();
+    } catch (error) {}
+  }
+
+  async updatedIsActiveAccount(req: FastifyRequest, res: FastifyReply) {
+    const schemaParams = z.object({
+      id: z.string(),
+    });
+
+    const { id } = schemaParams.parse(req.params);
+
+    try {
+      const organizacaoExiste = await prisma.organizacao.findFirst({
+        where: {
+          id,
+        },
+      });
+
+      await prisma.organizacao.update({
+        where: {
+          id: organizacaoExiste?.id,
+        },
+
+        data: {
+          isActivated: true,
         },
       });
 
