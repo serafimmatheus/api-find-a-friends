@@ -2,8 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { prisma } from '../database'
 import { compare, hash } from 'bcryptjs'
-import nodemailer from 'nodemailer'
-import { env } from '../env'
+
 
 class OrganizacaoController {
   async login(req: FastifyRequest, res: FastifyReply) {
@@ -151,30 +150,30 @@ class OrganizacaoController {
           organizacao,
           cidade,
           estado,
-          isActivated: false,
+          isActivated: true,
         },
       })
 
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: env.USER_EMAIL,
-          pass: env.USER_PASSWORD_EMAIL,
-        },
-        secure: true, // Use SSL/TLS
-        tls: {
-          rejectUnauthorized: false, // Permita conexões não autorizadas (usado para testes)
-        },
-      })
+      // const transporter = nodemailer.createTransport({
+      //   service: 'gmail',
+      //   auth: {
+      //     user: env.USER_EMAIL,
+      //     pass: env.USER_PASSWORD_EMAIL,
+      //   },
+      //   secure: true, // Use SSL/TLS
+      //   tls: {
+      //     rejectUnauthorized: false, // Permita conexões não autorizadas (usado para testes)
+      //   },
+      // })
 
-      await transporter.sendMail({
-        from: env.USER_EMAIL,
-        to: email,
-        subject: 'Bem vindo ao Find A Friend',
-        text: 'Seja bem vindo ao Find A Friend',
-        html: `<h1>Ative sua conta:</h1>
-        <a href="https://api-find-a-friends.vercel.app/api/v1/ativar-conta/${data.id}">Ativar conta</a>`,
-      })
+      // await transporter.sendMail({
+      //   from: env.USER_EMAIL,
+      //   to: email,
+      //   subject: 'Bem vindo ao Find A Friend',
+      //   text: 'Seja bem vindo ao Find A Friend',
+      //   html: `<h1>Ative sua conta:</h1>
+      //   <a href="https://api-find-a-friends.vercel.app/api/v1/ativar-conta/${data.id}">Ativar conta</a>`,
+      // })
 
       return res.status(201).send(data)
     } catch (error) {
